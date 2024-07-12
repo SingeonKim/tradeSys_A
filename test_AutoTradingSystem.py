@@ -146,3 +146,13 @@ class AutoTradingSystemTest(TestCase):
         self.assertGreaterEqual(price, 5000)
         self.assertLessEqual(price, 5899)
 
+    def test_드라이버선택(self):
+        # arrange
+        broker = KiwerDriver()
+        ats = AutoTradingSystem(broker)
+
+        # act (네모 드라이버로 변경)
+        ats.select_stock_brocker(NemoDriver())
+
+        # assert (네모 드라이버가 맞는지!)
+        self.assertIsInstance(self.ats.__broker, NemoDriver)
