@@ -38,7 +38,7 @@ class AutoTradingSystemTest(TestCase):
     # 오르지 않았다면 False 반환
 
     # buy_nice_timing(code, price) -> bool
-    def test_AutoTradingSystem_자동매매확인_1_True(self):
+    def test_AutoTradingSystem_자동매수확인_1_True(self):
         # arrange
         broker = create_autospec(StokerBrockerDriver)
         broker.login.return_value = True
@@ -55,7 +55,7 @@ class AutoTradingSystemTest(TestCase):
         # assert
         self.assertTrue(actual)
 
-    def test_AutoTradingSystem_자동매매확인_2_False(self):
+    def test_AutoTradingSystem_자동매수확인_2_False(self):
         # arrange
         broker = create_autospec(StokerBrockerDriver)
         broker.login.return_value = True
@@ -81,7 +81,7 @@ class AutoTradingSystemTest(TestCase):
     # 내리지 않았다면 False 반환
 
     # sell_nice_timing(code, count) -> bool
-    def test_AutoTradingSystem_자동매수확인_1_True(self):
+    def test_AutoTradingSystem_자동매매확인_1_True(self):
         # arrange
         broker = create_autospec(StokerBrockerDriver)
         broker.login.return_value = True
@@ -98,7 +98,7 @@ class AutoTradingSystemTest(TestCase):
         # assert
         self.assertTrue(actual)
 
-    def test_AutoTradingSystem_자동매수확인_2_False(self):
+    def test_AutoTradingSystem_자동매매확인_2_False(self):
         # arrange
         broker = create_autospec(StokerBrockerDriver)
         broker.login.return_value = True
@@ -114,3 +114,35 @@ class AutoTradingSystemTest(TestCase):
 
         # assert
         self.assertFalse(actual)
+
+    def test_키위드라이버(self):
+        # arrange
+        self.driver = KiwerDriver()
+
+        self.assertTrue(self.driver.login("user_id", "password"))
+
+        self.assertTrue(self.driver.buy("AAPL", 150.0, 10))
+
+        self.assertTrue(self.driver.sell("AAPL", 155.0, 5))
+
+        price = self.driver.get_price("AAPL")
+        self.assertNotEqual(price, -1)
+        self.assertGreaterEqual(price, 5000)
+        self.assertLessEqual(price, 5899)
+
+
+    def test_네모드라이버(self):
+        # arrange
+        self.driver = NemoDriver()
+
+        self.assertTrue(self.driver.login("user_id", "password"))
+
+        self.assertTrue(self.driver.buy("AAPL", 150.0, 10))
+
+        self.assertTrue(self.driver.sell("AAPL", 155.0, 5))
+
+        price = self.driver.get_price("AAPL")
+        self.assertNotEqual(price, -1)
+        self.assertGreaterEqual(price, 5000)
+        self.assertLessEqual(price, 5899)
+
