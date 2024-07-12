@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch, create_autospec
 from AutoTradingSystem import AutoTradingSystem
 from StokerBrockerDriver import StokerBrockerDriver, NemoDriver, KiwerDriver
 
-STOCK_CODE = '005930'
+STOCK_CODE = 'A005930'
 
 
 class AutoTradingSystemTest(TestCase):
