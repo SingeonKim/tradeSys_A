@@ -130,3 +130,19 @@ class AutoTradingSystemTest(TestCase):
         self.assertGreaterEqual(price, 5000)
         self.assertLessEqual(price, 5899)
 
+
+    def test_네모드라이버(self):
+        # arrange
+        self.driver = NemoDriver()
+
+        self.assertTrue(self.driver.login("user_id", "password"))
+
+        self.assertTrue(self.driver.buy("AAPL", 150.0, 10))
+
+        self.assertTrue(self.driver.sell("AAPL", 155.0, 5))
+
+        price = self.driver.get_price("AAPL")
+        self.assertNotEqual(price, -1)
+        self.assertGreaterEqual(price, 5000)
+        self.assertLessEqual(price, 5899)
+
