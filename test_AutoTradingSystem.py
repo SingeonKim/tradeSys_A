@@ -163,19 +163,27 @@ class AutoTradingSystemTest(TestCase):
         # arrange
         broker_not_important = KiwerDriver()
         ats = AutoTradingSystem(broker_not_important)
-        wrong_code1 = 'WRONG1'
-        wrong_code2 = '123'
         good_code1 = 'A005930'
         good_code2 = 'A005930'
 
         # act
-        actual1 = ats.is_valid_code(wrong_code1)
-        actual2 = ats.is_valid_code(wrong_code2)
-        actual3 = ats.is_valid_code(good_code1)
-        actual4 = ats.is_valid_code(good_code2)
+        actual1 = ats.is_valid_code(good_code1)
+        actual2 = ats.is_valid_code(good_code2)
 
         # assert
-        self.assertFalse(actual1)
-        self.assertFalse(actual2)
-        self.assertTrue(actual3)
-        self.assertTrue(actual4)
+        self.assertTrue(actual1)
+        self.assertTrue(actual2)
+
+    def test_종목유효성_검사_fail(self):
+        # arrange
+        broker_not_important = KiwerDriver()
+        ats = AutoTradingSystem(broker_not_important)
+        wrong_code1 = 'WRONG1'
+        wrong_code2 = '123'
+
+        # act assert
+        with self.assertRaises(Exception):
+            ats.is_valid_code(wrong_code1)
+        with self.assertRaises(Exception):
+            ats.is_valid_code(wrong_code2)
+
