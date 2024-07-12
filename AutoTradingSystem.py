@@ -5,7 +5,6 @@ class AutoTradingSystem:
     def __init__(self, broker):
         self.__broker = broker
 
-
     def buy_nice_timing(self, stock_name, input_balance):
         prev = 0
         for i in range(3):
