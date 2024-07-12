@@ -1,4 +1,4 @@
-class StokerBrockerDriver:
+class AutoTradingSystem:
     def __init__(self, broker):
         self.__broker = broker
 
