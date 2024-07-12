@@ -32,3 +32,6 @@ class AutoTradingSystem:
 
     def select_stock_brocker(self, broker):
         self.__broker = broker
+
+    def is_valid_code(self, code: str) -> bool:
+        return len(code) == 7 and code[0] in ("A", "B", "C", "K") and code[1:].isdigit()
