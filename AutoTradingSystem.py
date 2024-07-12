@@ -7,6 +7,9 @@ class AutoTradingSystem:
         self.__broker = broker
 
     def sell_nice_timing(self, code, count) -> bool:
+        if not self.is_valid_code(code):
+            raise ValueError("Not valid code")
+
         res = []
         for _ in range(3):
             res.append(self.__broker.get_price(code))
@@ -19,15 +22,18 @@ class AutoTradingSystem:
 
         return is_downtrend
 
-    def buy_nice_timing(self, stock_name, input_balance) -> bool:
+    def buy_nice_timing(self, code, count) -> bool:
+        if not self.is_valid_code(code):
+            raise ValueError("Not valid code")
+
         prev = 0
         for i in range(3):
-            current_price = self.__broker.get_price(stock_name)
+            current_price = self.__broker.get_price(code)
             if current_price <= prev:
                 return False
             prev = current_price
 
-        self.__broker.buy(stock_name, current_price, input_balance // current_price)
+        self.__broker.buy(code, current_price, count // current_price)
         return True
 
     def select_stock_brocker(self, broker):
