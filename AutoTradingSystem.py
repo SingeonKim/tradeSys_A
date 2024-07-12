@@ -14,6 +14,6 @@ class AutoTradingSystem:
 
         is_downtrend = (res[0] > res[1]) and (res[1] > res[2])
         if is_downtrend:
-            self.__broker.buy(code, res[2], count)
+            self.__broker.sell(code, res[2], count)
 
         return is_downtrend
