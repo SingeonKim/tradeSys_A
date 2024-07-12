@@ -2,8 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock, patch, create_autospec
 
 from AutoTradingSystem import AutoTradingSystem
-from StokerBrockerDriver import StokerBrockerDriver, KiwerDriver, NemoDriver
-
+from StokerBrockerDriver import StokerBrockerDriver, NemoDriver, KiwerDriver
 
 class AutoTradingSystemTest(TestCase):
 
