@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class I_StokerBrockerDriver(ABC):
+class StokerBrockerDriver(ABC):
     @abstractmethod
     def login(self, id, pwd) -> bool:
         pass
