@@ -93,7 +93,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매수 성공할 거임
-        actual = ats.buy_nice_timing('AAPL', 3)
+        actual = ats.sell_nice_timing('AAPL', 3)
 
         # assert
         self.assertTrue(actual)
@@ -110,7 +110,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매수 실패( 내리지않았음 300 -> 200 -> 300
-        actual = ats.buy_nice_timing('AAPL', 3)
+        actual = ats.sell_nice_timing('AAPL', 3)
 
         # assert
         self.assertFalse(actual)
