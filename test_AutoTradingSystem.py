@@ -71,3 +71,46 @@ class AutoTradingSystemTest(TestCase):
 
         # assert
         self.assertFalse(actual)
+
+
+    # StokerBrockerDriver을 가지고 있는 AutoTradingSystem 객체 생성 및
+    # -> 아마 자동 매매 구현하신분과 충돌이 날텐데 PR 시 팀장이 해결해보겠씁니다.
+    # 자동 매수 구현
+    # 요구 사항: 100ms 에 걸쳐 3번 가격 확인
+    # 3번에 걸쳐 내린다면 현재가 기준 count 만큼 매수(buy 호출) 및 True 반환
+    # 내리지 않았다면 False 반환
+
+    # sell_nice_timing(code, count) -> bool
+    def test_AutoTradingSystem_자동매수확인_1_True(self):
+        # arrange
+        broker = create_autospec(StokerBrockerDriver)
+        broker.login.return_value = True
+        broker.buy.return_value = True
+        broker.sell.return_value = True
+        broker.get_price.side_effect = [300, 200, 100]
+
+        ats = AutoTradingSystem(broker)
+
+        # act
+        # 자동 매수 성공할 거임
+        actual = ats.buy_nice_timing('AAPL', 3)
+
+        # assert
+        self.assertTrue(actual)
+
+    def test_AutoTradingSystem_자동매수확인_2_False(self):
+        # arrange
+        broker = create_autospec(StokerBrockerDriver)
+        broker.login.return_value = True
+        broker.buy.return_value = True
+        broker.sell.return_value = True
+        broker.get_price.side_effect = [300, 200, 300]
+
+        ats = AutoTradingSystem(broker)
+
+        # act
+        # 자동 매수 실패( 내리지않았음 300 -> 200 -> 300
+        actual = ats.buy_nice_timing('AAPL', 3)
+
+        # assert
+        self.assertFalse(actual)
