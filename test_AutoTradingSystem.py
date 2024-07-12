@@ -4,6 +4,9 @@ from unittest.mock import Mock, patch, create_autospec
 from AutoTradingSystem import AutoTradingSystem
 from StokerBrockerDriver import StokerBrockerDriver, NemoDriver, KiwerDriver
 
+STOCK_CODE = '005930'
+
+
 class AutoTradingSystemTest(TestCase):
 
     # 아래 스펙으로 StokerBrockerDriver 추상클래스 구현해주시면 되겠습니다.
@@ -26,9 +29,9 @@ class AutoTradingSystemTest(TestCase):
 
         # assert
         self.assertTrue(broker.login('test_user', 'password'))
-        self.assertTrue(broker.buy('AAPL', 150.0, 10))
-        self.assertTrue(broker.sell('AAPL', 155.0, 5))
-        self.assertEqual(broker.get_price('AAPL'), 100)
+        self.assertTrue(broker.buy(STOCK_CODE, 150.0, 10))
+        self.assertTrue(broker.sell(STOCK_CODE, 155.0, 5))
+        self.assertEqual(broker.get_price(STOCK_CODE), 100)
 
     # StokerBrockerDriver을 가지고 있는 AutoTradingSystem 객체 생성 및
     # 자동 매매 구현
@@ -49,7 +52,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매매 성공할 거임
-        actual = ats.buy_nice_timing('AAPL', 900)
+        actual = ats.buy_nice_timing(STOCK_CODE, 900)
 
         # assert
         self.assertTrue(actual)
@@ -66,7 +69,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매매 실패( 오르지않았음 100 -> 200 -> 100)
-        actual = ats.buy_nice_timing('AAPL', 900)
+        actual = ats.buy_nice_timing(STOCK_CODE, 900)
 
         # assert
         self.assertFalse(actual)
@@ -92,7 +95,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매수 성공할 거임
-        actual = ats.sell_nice_timing('AAPL', 3)
+        actual = ats.sell_nice_timing(STOCK_CODE, 3)
 
         # assert
         self.assertTrue(actual)
@@ -109,7 +112,7 @@ class AutoTradingSystemTest(TestCase):
 
         # act
         # 자동 매수 실패( 내리지않았음 300 -> 200 -> 300
-        actual = ats.sell_nice_timing('AAPL', 3)
+        actual = ats.sell_nice_timing(STOCK_CODE, 3)
 
         # assert
         self.assertFalse(actual)
@@ -120,11 +123,11 @@ class AutoTradingSystemTest(TestCase):
 
         self.assertTrue(self.driver.login("user_id", "password"))
 
-        self.assertTrue(self.driver.buy("AAPL", 150.0, 10))
+        self.assertTrue(self.driver.buy(STOCK_CODE, 150.0, 10))
 
-        self.assertTrue(self.driver.sell("AAPL", 155.0, 5))
+        self.assertTrue(self.driver.sell(STOCK_CODE, 155.0, 5))
 
-        price = self.driver.get_price("AAPL")
+        price = self.driver.get_price(STOCK_CODE)
         self.assertNotEqual(price, -1)
         self.assertGreaterEqual(price, 5000)
         self.assertLessEqual(price, 5899)
@@ -136,11 +139,11 @@ class AutoTradingSystemTest(TestCase):
 
         self.assertTrue(self.driver.login("user_id", "password"))
 
-        self.assertTrue(self.driver.buy("AAPL", 150.0, 10))
+        self.assertTrue(self.driver.buy(STOCK_CODE, 150.0, 10))
 
-        self.assertTrue(self.driver.sell("AAPL", 155.0, 5))
+        self.assertTrue(self.driver.sell(STOCK_CODE, 155.0, 5))
 
-        price = self.driver.get_price("AAPL")
+        price = self.driver.get_price(STOCK_CODE)
         self.assertNotEqual(price, -1)
         self.assertGreaterEqual(price, 5000)
         self.assertLessEqual(price, 5899)
@@ -178,3 +181,13 @@ class AutoTradingSystemTest(TestCase):
         self.assertFalse(actual2)
         self.assertTrue(actual3)
         self.assertTrue(actual4)
+
+    def test_종목유효성검사가_상위메소드에서_실패해서_Excetion발생Case(self):
+        # arrange
+        broker_not_important = KiwerDriver()
+        ats = AutoTradingSystem(broker_not_important)
+        wrong_code1 = 'WRONG1'
+
+        # act assert
+        with self.assertRaises(Exception):
+            ats.buy_nice_timing(wrong_code1, 900)
