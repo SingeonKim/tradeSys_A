@@ -13,7 +13,8 @@ class AutoTradingSystem:
             # time.sleep(0.1)
 
         is_downtrend = (res[0] > res[1]) and (res[1] > res[2])
+        current_price = res[2]
         if is_downtrend:
-            self.__broker.sell(code, res[2], count)
+            self.__broker.sell(code, current_price, count)
 
         return is_downtrend
