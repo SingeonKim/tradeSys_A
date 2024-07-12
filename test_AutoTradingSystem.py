@@ -4,7 +4,6 @@ from unittest.mock import Mock, patch, create_autospec
 from AutoTradingSystem import AutoTradingSystem
 from StokerBrockerDriver import StokerBrockerDriver, NemoDriver, KiwerDriver
 
-
 class AutoTradingSystemTest(TestCase):
 
     # 아래 스펙으로 StokerBrockerDriver 추상클래스 구현해주시면 되겠습니다.
@@ -146,3 +145,36 @@ class AutoTradingSystemTest(TestCase):
         self.assertGreaterEqual(price, 5000)
         self.assertLessEqual(price, 5899)
 
+    def test_드라이버선택(self):
+        # arrange
+        broker = KiwerDriver()
+        ats = AutoTradingSystem(broker)
+
+        # act (네모 드라이버로 변경)
+        ats.select_stock_brocker(NemoDriver())
+
+        # assert (네모 드라이버가 맞는지!)
+        self.assertIsInstance(ats._AutoTradingSystem__broker, NemoDriver)
+
+    # 사실 private 메소드여야 할 것 같은데
+    # 그냥 public으로 할게요
+    def test_종목유효성_검사(self):
+        # arrange
+        broker_not_important = KiwerDriver()
+        ats = AutoTradingSystem(broker_not_important)
+        wrong_code1 = 'WRONG1'
+        wrong_code2 = '123'
+        good_code1 = 'A005930'
+        good_code2 = 'A005930'
+
+        # act
+        actual1 = ats.is_valid_code(wrong_code1)
+        actual2 = ats.is_valid_code(wrong_code2)
+        actual3 = ats.is_valid_code(good_code1)
+        actual4 = ats.is_valid_code(good_code2)
+
+        # assert
+        self.assertFalse(actual1)
+        self.assertFalse(actual2)
+        self.assertTrue(actual3)
+        self.assertTrue(actual4)
