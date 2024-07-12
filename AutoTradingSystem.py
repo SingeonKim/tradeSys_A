@@ -18,7 +18,7 @@ class AutoTradingSystem:
             self.__broker.sell(code, current_price, count)
 
         return is_downtrend
-      
+
     def buy_nice_timing(self, stock_name, input_balance) -> bool:
         prev = 0
         for i in range(3):
@@ -29,3 +29,6 @@ class AutoTradingSystem:
 
         self.__broker.buy(stock_name, current_price, input_balance // current_price)
         return True
+
+    def select_stock_brocker(self, broker):
+        self.__broker = broker
